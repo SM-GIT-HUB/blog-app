@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import AddBlog from "./AddBlog"
 import Blog from "./Blog"
 import { useRouter } from "next/navigation"
+import axios from "axios"
 
 function BlogOverview() {
   const [blogs, setBlogs] = useState([]);
@@ -12,16 +13,9 @@ function BlogOverview() {
   async function fetchBlogs()
   {
     try {
-      const apiURL = process.env.API_URL || "http://localhost:3000";
+      const response = await axios.post(`/api/get.blogs`);
 
-      const response = await fetch(`${apiURL}/api/get.blogs`,
-        {
-          method: "GET",
-          cache: "no-store"
-        }
-      )
-
-      const data = await response.json();
+      const data = response.data;
 
       setBlogs(data.blogs);
     }
