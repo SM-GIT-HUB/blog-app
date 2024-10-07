@@ -1,4 +1,4 @@
-import dbConnect from "@/db";
+import dbConnect from "@/db"
 import blogModel from "@/db/models/blog.model"
 import { NextResponse } from "next/server"
 

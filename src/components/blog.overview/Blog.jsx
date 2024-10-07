@@ -26,13 +26,14 @@ import axios from "axios"
 import { useState } from "react"
 import { useEffect } from "react"
 
-function Blog({ blog }) {
+function Blog({ blog, blogs, setBlogs }) {
     const router = useRouter();
 
     const [openDialog, setOpenDialog] = useState(false);
-    const [form, setForm] = useState({ title: blog.title, description: blog.description });
+    const [form, setForm] = useState({ title: blog?.title, description: blog?.description });
     const [loading, setLoading] = useState(false);
 
+    
     useEffect(() => {
         setForm({ title: blog.title, description: blog.description });
     }, [blog])
@@ -41,6 +42,14 @@ function Blog({ blog }) {
     {
         try {
             await axios.delete(`/api/delete.blog?id=${id}`);
+
+            const newBlogs = blogs.filter((it) => {
+                return (it._id != blog._id);
+            })
+
+            setBlogs(newBlogs);
+            
+            console.log("blog deleted");
             router.refresh();
         }
         catch(err) {
@@ -52,7 +61,20 @@ function Blog({ blog }) {
     {
         try {
             setLoading(true);
-            await axios.put(`/api/update.blog?id=${blog._id}`, form);
+            const response = await axios.put(`/api/update.blog?id=${blog._id}`, form);
+            const data = response.data;
+
+            const currBlog = data.blog;
+
+            const newBlogs = blogs.map((it) => {
+                if (it._id != currBlog._id) {
+                    return it;
+                }
+                else
+                    return currBlog;
+            })
+
+            setBlogs(newBlogs);
 
             console.log("blog updated");
 

@@ -9,7 +9,7 @@ async function dbConnect()
             return;
         }
 
-        const url = process.env.MONGO_URL;
+        const url = process.env.MONGO_URL || "mongodb://localhost:27017/nextblog";
         await mongoose.connect(url);
 
         isConnected = true;

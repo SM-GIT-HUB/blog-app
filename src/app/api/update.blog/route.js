@@ -47,7 +47,7 @@ export async function PUT(req)
 
         await blog.save();
 
-        response = { message: "Blog updated" };
+        response = { message: "Blog updated", blog };
         status = 201;
     }
     catch(err) {

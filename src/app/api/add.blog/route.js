@@ -38,7 +38,7 @@ export async function POST(req, res)
         })
 
         if (newBlog) {
-            response = { message: "Blog created" };
+            response = { message: "Blog created", blog: newBlog };
             status = 201;
             return;
         }

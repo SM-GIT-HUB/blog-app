@@ -15,7 +15,7 @@ import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
-function AddBlog() {
+function AddBlog({ blogs, setBlogs }) {
     const [openDialog, setOpenDialog] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -29,9 +29,13 @@ function AddBlog() {
         try {
             setLoading(true);
 
-            await axios.post('/api/add.blog', form);
+            const response = await axios.post('/api/add.blog', form);
+
+            const data = response.data;
+            const blog = data.blog;
+
             console.log("Blog created");
-            router.refresh();
+            setBlogs([blog, ...blogs]);
         }
         catch(err) {
             console.log(err);
